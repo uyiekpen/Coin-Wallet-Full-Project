@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 interface User {
-    wallet: {};
+wallet: {};
   amount: number;
   sentTo?: string;
   receivedFrom?: string;

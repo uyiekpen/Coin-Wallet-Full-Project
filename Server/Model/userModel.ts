@@ -6,6 +6,8 @@ interface DataSample {
     email: string;
     password: string;
     accessToken: number;
+    Jwttoken: string;
+    verified: boolean;
     followers: {}[];
     following: {}[];
     wallet: {}[];
@@ -34,7 +36,13 @@ const DataSchema = new mongoose.Schema(
         accessToken : {
             type: Number
         },
-
+        Jwttoken : {
+            type: Number
+        },
+    
+		verified: {
+			type: Boolean,
+		},
 
         followers : [
             {
