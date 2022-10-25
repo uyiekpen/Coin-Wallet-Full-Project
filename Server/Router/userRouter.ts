@@ -9,6 +9,7 @@ import {
     getSingleUser,
     changePassword,
     verifyUser,
+    resetPassword
 } from "../Controller/userController"
 
 const  router = express.Router()
@@ -20,7 +21,8 @@ router.route("/signin").post(signinUser);
 router.route("/:id/update").patch(updateUser);
 router.route("/:id/delete").delete(deleteUser);
 router.route("/:id/:token").post(changePassword);
-router.route("/verify/:id").post(verifyUser);
+router.route("/reset").post(resetPassword);
+router.route("/:id").post(verifyUser);
 
 
 

@@ -8,6 +8,7 @@ interface DataSample {
     accessToken: number;
     Jwttoken: string;
     verified: boolean;
+    verifiedToken: string;
     followers: {}[];
     following: {}[];
     wallet: {}[];
@@ -42,6 +43,10 @@ const DataSchema = new mongoose.Schema(
     
 		verified: {
 			type: Boolean,
+		},
+        
+		verifiedToken: {
+			type: String,
 		},
 
         followers : [

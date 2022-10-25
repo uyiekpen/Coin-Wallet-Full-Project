@@ -58,7 +58,6 @@ const Creatuser = async(req: Request , res: Response) : Promise<Response>=>  {
             fullname,
             email,
             password :hash,  
-            Jwttoken: data,
             accessToken : 100 + Math.floor(Math.random()* 1000)
         })    
 
@@ -217,7 +216,41 @@ const resetPassword = async (req:Request,
         const email = req.body;
         const user = await userModel.findOne({email})
         if (user) {
-            if(user.verified && user.Jwttoken === "")
+            if(user.verified && user.Jwttoken === ""){
+                const token = crypto.randomBytes(5).toString("hex")
+
+                const data = jwt.sign({token}, "MySecret")
+                await userModel.findByIdAndUpdate(
+                    user._id, {token: data}, {new: true}
+                )
+
+                const file = path.join(__dirname, "../views/email.ejs")
+
+                ejs.renderFile(file,(err,data) => {
+                    if(err){
+                        console.log(err)
+                    }else{
+                        const mailOption = {
+                            from :"uyiekpenelizabeth@gmail.com",
+                            to : email,
+                            subject :"Reset Password",
+                            html: data
+                        }
+                        transport.sendMail(mailOption,(err, info)=>{
+                            if(err){
+                                console.log(err)
+                            }else{
+                                console.log("mail sent", info.response)
+                            }
+                        })
+                    }
+                })
+
+                res.status(200).json({
+					message: "Check your email to continue",
+				});
+                
+            }
             
         } else {
             return res.status(404).json({message: `user cant be found`})
@@ -236,5 +269,6 @@ export {
     deleteUser,
     getSingleUser,
     changePassword,
-    verifyUser
+    verifyUser,
+    resetPassword
    }
